@@ -75,6 +75,8 @@ if(ımgarray){
         post:post,
       imgUrl:Down,
       id:number2,
+      like:[],
+      comment:[],
       createdAt:number2
       ,email:user.email
       })
@@ -106,10 +108,12 @@ if(ımgarray){
     firestore.collection("Posts").doc(`${number}`).set({
         name: user.name,
         post:post,
-imgUrl:"",
-id:number,
-createdAt:number,
-email:user.email
+        imgUrl:"",
+        like:[],
+        comment:[],
+        id:number,
+        createdAt:number,
+        email:user.email
     })
     .then(function() {
         Alert.alert("successfully!");

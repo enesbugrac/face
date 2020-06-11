@@ -11,33 +11,20 @@ import ImageView from "react-native-image-viewing";
 import {connect } from "react-redux"
 import moment from "moment"
 import { firestore } from '../../firebase/firebase.utils';
+import {showcomment} from '../../redux/Card'
 
 
 
-function App({name,time,image,id,email,user,post}) {
-
+function App({name,time,image,id,email,user,post,likes,comment,setFocus}) {
 
   const windowWidth = Dimensions.get('window').width;
-
-
-
-  const imagesl = [
-    {
-      uri: "https://images.unsplash.com/photo-1571501679680-de32f1e7aad4",
-    },
-    {
-      uri: "https://images.unsplash.com/photo-1573273787173-0eb81a833b34",
-    },
-    {
-      uri: "https://images.unsplash.com/photo-1569569970363-df7b6160d111",
-    },
-  ];
-
-
-
-
+  
 const [imagess,setimages]=React.useState([])
-console.log(imagess)
+const [likess,setLikes]=React.useState(likes)
+const [commentt,setComment]=React.useState(comment)
+
+
+console.log("LİKES")
 
 
 
@@ -45,25 +32,65 @@ console.log(imagess)
 React.useEffect(() => {
 const newimg=[]
 
-
-
-
-  image.map(item=>
-    
-    newimg.push({uri:item,
-    
-    
-    })
+     image.map(item=>
+       newimg.push({uri:item,
+      })
     )
-
+    
     setimages(newimg)
 }, [])
 
+
+const likeIt =async () => {
+  var existingMail = false;
+  const newlikes = []
+  likess.map(emailUser => {
+    if(user.email === emailUser){
+      console.log("VARRRR")
+      existingMail = true;
+    }
+    newlikes.push(emailUser)
+  })
+  if(existingMail == false){
+  const nemail =  user.email
+  newlikes.push(nemail)
+  setLikes([...likess, nemail])
+  console.log(newlikes)
+  firestore
+  .collection("Posts")
+  .doc(`${id}`)
+  .set({
+  like: newlikes,
+  },{ merge: true }
+ );
+  }
   
-
-
-
-
+}
+const handleChange = event => {
+  console.log(event)
+  const textcomment = 
+    {
+      name:user.email,
+      comment:event.nativeEvent.text
+    }
+  setComment([...commentt,textcomment])
+}
+const handleComment = () => {
+  firestore
+  .collection("Posts")
+  .doc(`${id}`)
+  .set({
+  like: likes,
+  comment:commentt,
+  name: name,
+  post:post,
+  imgUrl:image,
+  id:id,
+  createdAt:id
+  ,email:email
+  }
+ );
+}
  
 const del=()=>{
   firestore.collection("Posts").doc(`${id}`).delete().then(function() {
@@ -79,9 +106,7 @@ const del=()=>{
 const [visible, setIsVisible] = React.useState(false);
  
   return (
-    
-
-imagess?(
+    (imagess?(
   <View style={{width:"100%",backgroundColor:"white",marginTop:40}}>
       <Card.Title
     title={name}
@@ -90,7 +115,20 @@ imagess?(
     right={(props) => user.email===email&&<IconButton {...props} icon="delete" onPress={del} />}
   />
         
-  <View style={{width:"95%",alignSelf:"center",marginTop:20,marginBottom:20}}><Paragraph>{post}</Paragraph></View>
+  <View style={{width:"95%",alignSelf:"center",marginTop:20,marginBottom:20}}>
+  <Paragraph>{post}</Paragraph>
+  <View flexDirection='row' alignItems='center' justifyContent='center'>
+  <Button onPress = {likeIt}>
+    Like
+  </Button>
+  <Text>{likess.length}</Text>
+  <Button onPress={() => setFocus(true,id)}>Show Comments</Button>
+  </View>
+  <View>
+    <TextInput placeholder='enter comment' value={commentt} onChange={handleChange}/>
+    <Button onPress={handleComment}>Comment</Button>
+  </View>
+  </View>
  {imagess.length?(
  <TouchableOpacity  onPress={()=>setIsVisible(true)} style={{height:windowWidth*3/4}}>
 
@@ -112,21 +150,11 @@ imagess?(
 
  ):(null)}
  
- 
-
-
-
-
       </View>
-        
-
-
-
-
 
 ):(<ActivityIndicator size="large" color="#0000ff" />)
 
-    
+    )
       
    
   );
@@ -177,8 +205,10 @@ const styles = StyleSheet.create({
     textAlign: "center"
   }
 });
-
+const d=dispatch=>({
+  setFocus:(payload,payload2) => dispatch(showcomment(payload,payload2))
+})
 const s=state=>({
   user:state.user.user
 })
-export default connect(s)(App)
+export default connect(s,d)(React.memo(App));
