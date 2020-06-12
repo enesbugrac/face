@@ -18,8 +18,6 @@ function CommentView  ({post}) {
     const windowWidth = Dimensions.get('window').width;
     const [visible, setIsVisible] = React.useState(false);
     
-    console.log(post)
-    console.log("GİRRRRDİİİİİİİİİİİİİİ")
     if(post.comment){
         return(
             <View>

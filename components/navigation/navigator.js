@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, View } from 'react-native';
 import {DrawerItemList, createDrawerNavigator,DrawerItem ,DrawerContentScrollView} from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-
+import UserScreen from '../../pages/userscreen'
 import HomeScreen from '../../pages/homescreen';
 import SingInScreen from '../../pages/signinscreen';
 import SingUpScreen from '../../pages/signupscreen';
@@ -35,7 +35,7 @@ React.useEffect(() => {
     function CustomDrawerContent(props) {
       return (
         <DrawerContentScrollView {...props}>
-          <DrawerItemList {...props} itemStyle={{marginTop:50}}/>
+          <DrawerItemList {...props} />
           <DrawerItem label="Log out" onPress={() =>{ auth.signOut()
           add()
           
@@ -51,14 +51,13 @@ React.useEffect(() => {
 {user?(
  <Drawer.Navigator
  drawerContent={props => <CustomDrawerContent {...props} />}
- initialRouteName="Home">
- <Drawer.Screen name="Home" component={HomeScreen} />
- 
+ initialRouteName="User Page">
+ <Drawer.Screen name="User Page" component={UserScreen}/>
 </Drawer.Navigator>
 
 ):(
  <Drawer.Navigator initialRouteName="Sign In" >
- 
+
  <Drawer.Screen name="Sign Up" component={SingUpScreen} style={{marginTop:50}}/>
  <Drawer.Screen name="Sign In" component={SingInScreen} />
 </Drawer.Navigator>

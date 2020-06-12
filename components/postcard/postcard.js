@@ -24,7 +24,6 @@ const [likess,setLikes]=React.useState(likes)
 const [commentt,setComment]=React.useState(comment)
 
 
-console.log("LİKES")
 
 
 
@@ -46,7 +45,6 @@ const likeIt =async () => {
   const newlikes = []
   likess.map(emailUser => {
     if(user.email === emailUser){
-      console.log("VARRRR")
       existingMail = true;
     }
     newlikes.push(emailUser)
@@ -55,7 +53,6 @@ const likeIt =async () => {
   const nemail =  user.email
   newlikes.push(nemail)
   setLikes([...likess, nemail])
-  console.log(newlikes)
   firestore
   .collection("Posts")
   .doc(`${id}`)
@@ -67,7 +64,6 @@ const likeIt =async () => {
   
 }
 const handleChange = event => {
-  console.log(event)
   const textcomment = 
     {
       name:user.email,

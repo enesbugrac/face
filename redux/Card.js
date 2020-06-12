@@ -48,19 +48,14 @@ const INITIAL_STATE = {
   function updater(newItem,cartItems){
         if (newItem.type === "added") {
           cartItems.push(newItem.props)
-          console.log("CartItemsssss",cartItems)
-          console.log("Itemsssss",newItem)
             return cartItems;
         }
         if (newItem.type === "modified") {
          
            const newCartItem = cartItems.map(item=>
               {
-                 console.log("Itemsssss",item.id)
                 
               })
-              console.log("CartItemsssss",cartItems)
-              console.log("Itemsssss",newItem)
             return(newCartItem);
         }
         if (newItem.type === "removed") {

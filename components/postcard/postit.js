@@ -8,19 +8,6 @@ import {connect} from "react-redux"
 import firebase from "../../firebase/firebase.utils"
 import {firestore} from "../../firebase/firebase.utils"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 function App({open,setopen,user}) {
     const [ımgarray,setımg]=React.useState([])
    const[post,setpost]=React.useState("")
@@ -35,13 +22,10 @@ if(ımgarray){
 
       let Down=[]
 
-      console.log("b")
       await Promise.all(
        
       
         ımgarray.map(async item => {
-          console.log(item)
-          console.log("baştaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
           let result = await fetch(item);
 
@@ -149,26 +133,15 @@ if(ımgarray){
        
           
               if (!result.cancelled) {
-                console.log(ımgarray)
 setımg([...ımgarray,result.uri] )
                
               }
-
-
         }
-   
-       
       };
-
-
-console.log(ımgarray)
-console.log("bak")
-
-
   return (
     <View style={styles.container}>
 
-<Modal
+        <Modal
         animationType="slide"
         transparent={true}
         visible={open}
@@ -178,54 +151,33 @@ console.log("bak")
           <View style={styles.modalView}>
           
           <AntDesign name="closecircleo" size={34} color="red" style={{position:"absolute",top:10,right:10}} onPress={()=>{setopen(false)
-        setloading(false)
-        }}/>
+            setloading(false)
+            }}/>
             <Title style={styles.modalText}>Post Something !</Title>
            
             <TextInput
             multiline
-value          
+            value          
             style={{width:"100%",marginBottom:40,maxHeight:200,marginTop:40}}
-        label='Write Something'
-        value={post}
-        onChangeText={text => setpost(text)}
+            label='Write Something'
+            value={post}
+            onChangeText={text => setpost(text)}
       
-      />
-
-
+          />
 {loading?(<ActivityIndicator size="large" color="#0000ff" />):(
     <View style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
-<Button color="#1877F2" icon="camera" mode="contained" onPress={pickImage}>
+      <Button color="#1877F2" icon="camera" mode="contained" onPress={pickImage}>
     {ımgarray.length>0?"more":"Image"}
   </Button>
   <Button color="#1877F2" icon="share" mode="contained" onPress={uploadImage}>
     Post it!
   </Button>
   </View>
-  )}
-
-
-
-
-
-
-
-
-           
+  )}           
           </View>
         </View>
       </Modal>
 
-
-
-
-
-
-
-
-
-    
-     
     </View>
   );
 }

@@ -15,12 +15,12 @@ function HomeScreen({ navigation,posts,isComment,setFocus,commentPost,u }) {
     a=firestore.collection("Posts")
     .onSnapshot({ includeMetadataChanges: false},function(snapshot) {
       let Array=[]
-      console.log("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+    
       setloading(true)
       snapshot.docChanges().forEach(function(change) {
             if (change.type === "added") {
                 u({props:change.doc.data(),type:"added"})
-               console.log(posts)
+               
                 
             }
             if (change.type === "modified") {
